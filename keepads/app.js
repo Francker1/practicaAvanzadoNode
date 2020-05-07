@@ -10,24 +10,30 @@ var app = express();
 // connect to the database:
 require("./lib/connectDB");
 
+
+const jwtAuth = require("./lib/jwtAuth");
+const loginController = require("./routes/loginController");
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "html");
 app.engine("html", require("ejs").__express);
 
 app.use(cors());
+app.use(express.static(path.join(__dirname, "public")));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+
 
 /**
  * API routes:
  */
-app.use("/apiv1/ads", require("./routes/api/ads"));
+app.use("/apiv1/ads", jwtAuth(), require("./routes/api/ads"));
 app.use("/apiv1/tags", require("./routes/api/tags"));
 app.use("/api-docs", require("./routes/api/api-docs"));
+app.use("/apiv1/loginJWT", loginController.postJWT);
 
 /**
  * Website routes:

@@ -32,3 +32,5 @@ client/yarn-error.log*
 # node_modules
 
 keepads/node_modules
+
+.env

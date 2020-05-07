@@ -240,6 +240,17 @@ Returns a list in json format with the possible tags created.
 
 <br>
 
+## Authentication JWT
+
+POST /apiv1/loginJWT 
+@params
+    email
+    password
+
+Returns a json with JWT authentication
+
+<br>
+
 ## ESLINT:
 
 I have included EsLint only for the API folder. If you want to eslint check the **.eslintrc.json** rules, you can do the following code: 

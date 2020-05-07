@@ -21,6 +21,9 @@ conn.on("error", err => {
     process.exit(1);
 });
 
-mongoose.connect("mongodb://localhost/keepads", {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.MONGODB_CONNECTION_URL, {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true
+});
 
 module.exports = conn;
