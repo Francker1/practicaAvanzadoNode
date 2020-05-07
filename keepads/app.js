@@ -10,13 +10,17 @@ var app = express();
 // connect to the database:
 require("./lib/connectDB");
 
+// internationalization i18n
+const i18n = require("./lib/i18nConfig")();
+app.use(i18n.init);
 
+// auth JWT API
 const jwtAuth = require("./lib/jwtAuth");
 const loginController = require("./routes/loginController");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "html");
+app.set("view engine", "ejs");
 app.engine("html", require("ejs").__express);
 
 app.use(cors());
