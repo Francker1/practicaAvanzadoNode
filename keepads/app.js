@@ -50,7 +50,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res) {
+app.use(function(err, req, res, next) {
   
   if(err.array){
     err.status = 422;
