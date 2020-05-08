@@ -8,6 +8,41 @@ const jwt = require("jsonwebtoken");
 class LoginController{
 
     /**
+     * GET /login
+     */
+    index(req, res, next) {
+
+       res.locals.email = '';
+       res.locals.error = '';
+       res.render('login');
+    }
+
+    /**
+     * POST /login
+     */
+    async post(req, res, next) {
+
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const user = await User.findOne({ email });
+
+        if( !user || !await bcrypt.compare(password, user.password) ){
+
+            res.locals.email = email;
+            res.locals.error = res.__("Invalid credentials");
+            res.render("login");
+            return;
+        }
+
+        req.session.authUser = {
+            _id: user._id,
+        };
+
+        res.redirect("/profile");
+    }
+
+    /**
      * POST /apiv1/loginJWT
      */
     async postJWT(req, res, next){
@@ -41,6 +76,22 @@ class LoginController{
 
             next(err);
         }
+    }
+
+    /**
+     * GET /logout
+     */
+    logout(req, res, next){
+
+        req.session.regenerate(err => {
+
+            if(err){
+
+                return next(err);
+            }
+
+            res.redirect("/");
+        });
     }
 
 }

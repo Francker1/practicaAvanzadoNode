@@ -4,16 +4,21 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var cors = require("cors");
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 var app = express();
 
 // connect to the database:
-require("./lib/connectDB");
+const mongooseConnection = require("./lib/connectDB");
 
 
 // auth JWT API
 const jwtAuth = require("./lib/jwtAuth");
+const sessionAuth = require("./lib/sessionAuth");
 const loginController = require("./routes/loginController");
+const privateController = require("./routes/privateController");
+
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -27,6 +32,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+app.locals.title = 'KeepAds API';
+
 // internationalization i18n
 const i18n = require("./lib/i18nConfig")();
 app.use(i18n.init);
@@ -39,11 +46,38 @@ app.use("/apiv1/tags", require("./routes/api/tags"));
 app.use("/api-docs", require("./routes/api/api-docs"));
 app.use("/apiv1/loginJWT", loginController.postJWT);
 
+
+// Control session website
+app.use(session({
+
+  name: "keepads-session",
+  secret: process.env.SESSION_KEY,
+  saveUninitialized: true,
+  resave: false,
+  cookie: {
+    secure: false, //in my case, i don't have https in local enviroment, in production the value is true
+    maxAge: 1000 * 60 * 60 * 24 * 2
+  },
+  store: new MongoStore({ mongooseConnection })
+}));
+
+//get session to all views
+app.use((req, res, next) => {
+
+  res.locals.session = req.session;
+  next();
+})
+
 /**
  * Website routes:
  */
 app.use("/", require("./routes/index"));
 app.use("/change-locale", require("./routes/change-locale"));
+app.get("/login",   loginController.index);
+app.post("/login",  loginController.post);
+app.get("/logout",  loginController.logout);
+app.get("/profile", sessionAuth(["admin"]), privateController.index);
+//app.get("/users", sessionAuth(["admin"]), privateController.index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

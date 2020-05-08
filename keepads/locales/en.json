@@ -4,5 +4,12 @@
 	"Price": "Price",
 	"Type": "Type",
 	"List of advertisements, showing": "List of advertisements, showing",
-	"Tags": "Tags"
+	"Tags": "Tags",
+	"Log In": "Log In",
+	"Favorites": "Favorites",
+	"Invalid credentials": "Invalid credentials",
+	"Email address": "Email address",
+	"Password": "Password",
+	"Profile": "Profile",
+	"Log Out": "Log Out"
 }

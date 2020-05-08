@@ -29,7 +29,7 @@ router.get('/', async function(req, res, next) {
 
     // list by filters:
     const ads = await Ads.list( filters, limit, skip, sort, fields );
-    res.render('index', { title: 'KeepAds API', ads });
+    res.render('index', { ads });
   }catch(err){
 
     next(err);

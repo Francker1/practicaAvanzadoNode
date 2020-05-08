@@ -4,5 +4,12 @@
 	"List of advertisements, showing": "Lista de anuncios, mostrando",
 	"Price": "Precio",
 	"Type": "Tipo",
-	"Tags": "Etiquetas"
+	"Tags": "Etiquetas",
+	"Log In": "Iniciar Sesión",
+	"Favorites": "Favoritos",
+	"Invalid credentials": "Datos erróneos",
+	"Email address": "Correo electrónico",
+	"Password": "Contraseña",
+	"Profile": "Perfil",
+	"Log Out": "Cerrar sesión"
 }
