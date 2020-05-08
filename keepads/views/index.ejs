@@ -14,6 +14,48 @@
     <div class="bg-circle-4 bg-circle"></div>
   </header>
 
-  <h1><%= __("Welcome to") %>  <%= title %></h1>
+  <div class="container">
+    <div class="row">
+      <div class="col my-5">
+        <h1><%= __("Welcome to") %>  <%= title %></h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col mb-5">
+        <h4><%= __("List of advertisements, showing") %> <%= ads.length %></h4>
+      </div> 
+    </div>
+
+    <div class="row">
+
+      <% ads.forEach( ad => { %> 
+
+        <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
+          <div class="card">
+            <img src="http://localhost:9000/img/ads/<%=ad.photo%>" class="card-img-top" alt="<%= ad.name %> ">
+            <div class="card-body">
+              <h5 class="card-title"><%= ad.name %></h5>
+              <div class="card-text">
+                <dl>
+                  <dt><%= __("Price")%>: <%= ad.price %> €</dt>
+                  <dt><%= __("Type")%>:</dt>
+                    <dd><%= ad.type %></dd>
+
+                  <dt><%= __("Tags")%>:</dt>
+                    <dd><%= ad.tags %></dd>
+                </dl>
+              </div>
+              <div class="card-footer">
+                <div class="small">
+                  ID: <%= ad._id %> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %> 
+    </div>
+  </div>
 
 <% include _footer.ejs %> 
