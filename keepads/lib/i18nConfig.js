@@ -11,6 +11,7 @@ module.exports = function(){
         defaultLocale: "en",
         autoReload: true,
         syncFiles: true,
+        cookie: "keepads-locale"
     });
 
     i18n.setLocale("en");

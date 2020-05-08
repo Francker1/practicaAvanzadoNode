@@ -10,9 +10,6 @@ var app = express();
 // connect to the database:
 require("./lib/connectDB");
 
-// internationalization i18n
-const i18n = require("./lib/i18nConfig")();
-app.use(i18n.init);
 
 // auth JWT API
 const jwtAuth = require("./lib/jwtAuth");
@@ -30,6 +27,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// internationalization i18n
+const i18n = require("./lib/i18nConfig")();
+app.use(i18n.init);
 
 /**
  * API routes:
@@ -43,6 +43,7 @@ app.use("/apiv1/loginJWT", loginController.postJWT);
  * Website routes:
  */
 app.use("/", require("./routes/index"));
+app.use("/change-locale", require("./routes/change-locale"));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
