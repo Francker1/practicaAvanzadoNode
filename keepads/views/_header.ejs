@@ -33,13 +33,23 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/login"><%= __("Log In")%></a>
-          </li>
 
-          <li class="nav-item">
-            <a class="nav-link" href="/profile"><%= __("Profile")%></a>
-          </li>
+          <% if ( !session.authUser ){ %>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/login"><%= __("Log In")%></a>
+            </li>
+
+          <% } else { %>
+
+            <li class="nav-item">
+              <a class="nav-link" href="/logout"><%= __("Log Out")%></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/profile"><%= __("Profile")%></a>
+            </li>
+            
+          <% } %>
 
           <% getLocales().forEach( locale => { %>
             <li class="nav-item">

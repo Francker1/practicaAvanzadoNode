@@ -10,5 +10,6 @@
 	"Invalid credentials": "Datos erróneos",
 	"Email address": "Correo electrónico",
 	"Password": "Contraseña",
-	"Profile": "Perfil"
+	"Profile": "Perfil",
+	"Log Out": "Cerrar sesión"
 }

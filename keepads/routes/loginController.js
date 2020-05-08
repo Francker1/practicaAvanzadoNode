@@ -35,8 +35,11 @@ class LoginController{
             return;
         }
 
+        req.session.authUser = {
+            _id: user._id,
+        };
+
         res.redirect("/profile");
-        
     }
 
     /**
@@ -73,6 +76,22 @@ class LoginController{
 
             next(err);
         }
+    }
+
+    /**
+     * GET /logout
+     */
+    logout(req, res, next){
+
+        req.session.regenerate(err => {
+
+            if(err){
+
+                return next(err);
+            }
+
+            res.redirect("/");
+        });
     }
 
 }
