@@ -11,12 +11,13 @@ var app = express();
 require("./lib/connectDB");
 
 
+// auth JWT API
 const jwtAuth = require("./lib/jwtAuth");
 const loginController = require("./routes/loginController");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "html");
+app.set("view engine", "ejs");
 app.engine("html", require("ejs").__express);
 
 app.use(cors());
@@ -26,6 +27,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// internationalization i18n
+const i18n = require("./lib/i18nConfig")();
+app.use(i18n.init);
 
 /**
  * API routes:
@@ -39,6 +43,7 @@ app.use("/apiv1/loginJWT", loginController.postJWT);
  * Website routes:
  */
 app.use("/", require("./routes/index"));
+app.use("/change-locale", require("./routes/change-locale"));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -46,7 +51,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res) {
+app.use(function(err, req, res, next) {
   
   if(err.array){
     err.status = 422;
