@@ -8,6 +8,38 @@ const jwt = require("jsonwebtoken");
 class LoginController{
 
     /**
+     * GET /login
+     */
+    index(req, res, next) {
+
+       res.locals.email = '';
+       res.locals.error = '';
+       res.render('login');
+    }
+
+    /**
+     * POST /login
+     */
+    async post(req, res, next) {
+
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const user = await User.findOne({ email });
+
+        if( !user || !await bcrypt.compare(password, user.password) ){
+
+            res.locals.email = email;
+            res.locals.error = res.__("Invalid credentials");
+            res.render("login");
+            return;
+        }
+
+        res.redirect("/profile");
+        
+    }
+
+    /**
      * POST /apiv1/loginJWT
      */
     async postJWT(req, res, next){

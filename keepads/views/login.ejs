@@ -1,0 +1,34 @@
+<% include _header.ejs %>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-12 col-md-6 mt-5">
+                <form method="POST">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1"><%= __("Email address") %></label>
+                      <input 
+                        type="email" 
+                        class="form-control" 
+                        id="exampleInputEmail1" 
+                        aria-describedby="emailHelp"
+                        placeholder="<%= __("Email address") %>"
+                        name="email"
+                        value="<%= email %>">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleInputPassword1"><%= __("Password") %></label>
+                      <input 
+                        type="password" 
+                        class="form-control" 
+                        id="exampleInputPassword1"
+                        placeholder="<%= __("Password") %>"
+                        name="password">
+                    </div>
+                    <small class="text-danger"><%= error %> </small>
+                    <button type="submit" class="btn btn-lg btn-block btn-primary"><%= __("Log In") %></button>
+                  </form>
+            </div>
+        </div>
+    </div>   
+    
+<% include _footer.ejs %> 

@@ -14,6 +14,7 @@ require("./lib/connectDB");
 // auth JWT API
 const jwtAuth = require("./lib/jwtAuth");
 const loginController = require("./routes/loginController");
+const privateController = require("./routes/privateController");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -26,6 +27,8 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.locals.title = 'KeepAds API';
 
 // internationalization i18n
 const i18n = require("./lib/i18nConfig")();
@@ -44,6 +47,9 @@ app.use("/apiv1/loginJWT", loginController.postJWT);
  */
 app.use("/", require("./routes/index"));
 app.use("/change-locale", require("./routes/change-locale"));
+app.get("/login",   loginController.index);
+app.post("/login",  loginController.post);
+app.get("/profile", privateController.index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
