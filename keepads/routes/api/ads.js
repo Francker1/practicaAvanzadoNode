@@ -2,8 +2,9 @@
 
 const express = require("express");
 const router = express.Router();
-const Jimp = require("jimp");
+const connectionPromise = require("../../lib/connectAMQP");
 
+const jimpResize = require("../../consumers/consumerJimp");
 const helperJS = require("../../public/javascripts/helper");
 
 
@@ -120,8 +121,14 @@ router.post("/", async (req, res, next) => {
 
     try{
 
+        const queueName = "jimp";
+
         const adDataCreate = req.body;
+
+        const filePath = req.file.path;
+        const publicPath = req.file.destination;
         const photoName = req.file.filename;
+
         adDataCreate.photo = photoName ? photoName : "test_image.jpg";
 
         const ad = new Advertisement(adDataCreate);
@@ -129,22 +136,26 @@ router.post("/", async (req, res, next) => {
         //save in BD
         const adSaved = await ad.save();
         
-        const publicPath = req.file.destination;
-
-        Jimp.read(req.file.path)
-            .then(imgThumb => {
-
-                return imgThumb
-                .resize(100, 100)
-                .quality(100)
-                .write(`${publicPath}/thumb/${photoName}`); 
-            })
-            .catch(err => {
-
-                const error = new Error("No image resized");
-                error.status = 404;
-                return next(error);
+        //conectarnos al servidor amqp
+        const connection = await connectionPromise;
+        //conectar  a un canal
+        const channel = await connection.createChannel();
+        //asegurar que tenemos cola
+        await channel.assertQueue(queueName, {
+            durable: true,
         });
+
+        const dataFile = {
+            path: filePath,
+            publicPath: publicPath,
+            photoName: photoName,
+        }
+        //send work to the queue
+        channel.sendToQueue(queueName, Buffer.from(JSON.stringify(dataFile)), {});
+
+        //call to consumer
+        jimpResize();
+        
 
         //if is ok, response code 201 - created
         res.status(201).json(adSaved);

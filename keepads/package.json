@@ -11,6 +11,7 @@
     "lint": "./node_modules/.bin/eslint **/*.js"
   },
   "dependencies": {
+    "amqplib": "^0.5.5",
     "bcrypt": "^4.0.1",
     "connect-mongo": "^3.2.0",
     "cookie-parser": "~1.4.4",
