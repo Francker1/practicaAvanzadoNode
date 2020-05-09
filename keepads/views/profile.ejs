@@ -1,5 +1,31 @@
 <% include _header.ejs %>
 
-    <h1>Perfillll</h1>
+<header class="masthead text-center text-white">
+    <div class="masthead-content">
+      <div class="container">
+        <h3 class="masthead-heading mb-0"><%= __("Private Area") %></h3>
+      </div>
+    </div>
+    <div class="bg-circle-2 bg-circle"></div>
+    <div class="bg-circle-3 bg-circle"></div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <div class="col my-4">
+            <h4><%= __("Hi") %>, <%= user.email %> </h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p><%= __("Cooming soon") %>...</p>
+            <ul>
+                <li><%= __("Favorites List") %></li>
+                <li><%= __("Comments") %></li>
+                <li><%= __("And more") %></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 <% include _footer.ejs %> 

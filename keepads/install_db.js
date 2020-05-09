@@ -34,7 +34,18 @@ const initUsers = async () => {
     await User.insertMany([
         {
             email: "user@example.es",
-            password: await User.hashPassword("123456")
-        }
+            password: await User.hashPassword("123456"),
+            role: "user"
+        },
+        {
+            email: "admin@example.es",
+            password: await User.hashPassword("qwerty"),
+            role: "admin"
+        },
+        {
+            email: "user2@example.es",
+            password: await User.hashPassword("123456"),
+            role: "user"
+        },
     ]);
 }

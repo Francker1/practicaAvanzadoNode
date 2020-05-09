@@ -42,7 +42,7 @@ app.use(i18n.init);
  * API routes:
  */
 app.use("/apiv1/ads", jwtAuth(), require("./routes/api/ads"));
-app.use("/apiv1/tags", require("./routes/api/tags"));
+app.use("/apiv1/tags", jwtAuth(), require("./routes/api/tags"));
 app.use("/api-docs", require("./routes/api/api-docs"));
 app.use("/apiv1/loginJWT", loginController.postJWT);
 

@@ -37,8 +37,9 @@ class LoginController{
 
         req.session.authUser = {
             _id: user._id,
+            role: user.role
         };
-
+        
         res.redirect("/profile");
     }
 

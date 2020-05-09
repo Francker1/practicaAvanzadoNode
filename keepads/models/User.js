@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
         unique: true
     },
     password: String,
+    role: String,
 });
 
 userSchema.statics.hashPassword = function(password){

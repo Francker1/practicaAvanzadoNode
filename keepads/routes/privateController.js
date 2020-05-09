@@ -1,16 +1,22 @@
 "use strict";
 
+const User = require("../models/User");
+
 class PrivateController{
 
-    index(req, res, next) {
+    async index(req, res, next) {
 
-        if( !req.session.authUser ){
+        const auth = req.session.authUser;
+        const _id = auth._id;
+        const user = await User.findOne({ _id });
+
+        if( !auth ){
 
             res.redirect("/login");
             return;
         }
 
-        res.render('profile');
+        res.render('profile', { user });
     }
 }
 
