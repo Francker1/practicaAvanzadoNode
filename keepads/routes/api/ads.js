@@ -2,6 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
+const Jimp = require("jimp");
 
 const helperJS = require("../../public/javascripts/helper");
 
@@ -120,12 +121,30 @@ router.post("/", async (req, res, next) => {
     try{
 
         const adDataCreate = req.body;
-        adDataCreate.photo = req.file.filename ? req.file.filename : "test_image.jpg";
+        const photoName = req.file.filename;
+        adDataCreate.photo = photoName ? photoName : "test_image.jpg";
 
         const ad = new Advertisement(adDataCreate);
 
         //save in BD
         const adSaved = await ad.save();
+        
+        const publicPath = req.file.destination;
+
+        Jimp.read(req.file.path)
+            .then(imgThumb => {
+
+                return imgThumb
+                .resize(100, 100)
+                .quality(100)
+                .write(`${publicPath}/thumb/${photoName}`); 
+            })
+            .catch(err => {
+
+                const error = new Error("No image resized");
+                error.status = 404;
+                return next(error);
+        });
 
         //if is ok, response code 201 - created
         res.status(201).json(adSaved);

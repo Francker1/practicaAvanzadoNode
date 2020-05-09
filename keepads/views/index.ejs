@@ -43,11 +43,15 @@
               <div class="card-text">
                 <dl>
                   <dt><%= __("Price")%>: <%= ad.price %> €</dt>
+
                   <dt><%= __("Type")%>:</dt>
                     <dd><%= ad.type %></dd>
 
                   <dt><%= __("Tags")%>:</dt>
                     <dd><%= ad.tags %></dd>
+
+                  <dt><%= __("Thumbnail")%>:</dt>
+                    <dd><img src="/img/ads/thumb/<%=ad.photo%>" class="img-thumbnail" alt="<%= ad.name %> "></dd>
                 </dl>
               </div>
               <div class="card-footer">
