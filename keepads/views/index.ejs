@@ -5,7 +5,11 @@
       <div class="container">
         <h1 class="masthead-heading mb-0">KeepAds</h1>
         <h2 class="masthead-subheading mb-0"><%= __("Search. Find. Buy.") %></h2>
-        <a href="#" class="btn btn-primary btn-xl rounded-pill mt-5">Learn More</a>
+        <a href="?tag=work" class="btn btn-primary btn-xl rounded-pill mt-5">Work</a>
+        <a href="?tag=lifestyle" class="btn btn-primary btn-xl rounded-pill mt-5">Lifestyle</a>
+        <a href="?tag=mobile" class="btn btn-primary btn-xl rounded-pill mt-5">Mobile</a>
+        <a href="?tag=motor" class="btn btn-primary btn-xl rounded-pill mt-5">Motor</a>
+        <a href="/" class="btn btn-primary btn-xl rounded-pill mt-5">All</a>
       </div>
     </div>
     <div class="bg-circle-1 bg-circle"></div>
@@ -33,7 +37,7 @@
 
         <div class="col-sm-12 col-md-6 col-lg-4 mb-4">
           <div class="card">
-            <img src="http://localhost:9000/img/ads/<%=ad.photo%>" class="card-img-top" alt="<%= ad.name %> ">
+            <img src="/img/ads/<%=ad.photo%>" class="card-img-top" alt="<%= ad.name %> ">
             <div class="card-body">
               <h5 class="card-title"><%= ad.name %></h5>
               <div class="card-text">

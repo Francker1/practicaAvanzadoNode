@@ -2,8 +2,6 @@
 
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-const upload = multer({ dest: "./public/img/ads/" });
 
 const helperJS = require("../../public/javascripts/helper");
 
@@ -117,12 +115,12 @@ router.get("/:id", async (req, res, next) => {
  *       201:
  *         description: Created!
  */
-router.post("/", upload.single("photo"), async (req, res, next) => {
+router.post("/", async (req, res, next) => {
 
     try{
 
         const adDataCreate = req.body;
-        adDataCreate.photo = adDataCreate.photo ? adDataCreate.photo : "test_image.jpg";
+        adDataCreate.photo = req.file.filename ? req.file.filename : "test_image.jpg";
 
         const ad = new Advertisement(adDataCreate);
 

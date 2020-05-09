@@ -9,6 +9,20 @@ const MongoStore = require('connect-mongo')(session);
 
 var app = express();
 
+//upload files to folder img
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    
+    cb(null, './public/img/ads');
+  },
+  filename: function (req, file, cb) {
+
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
+
 // connect to the database:
 const mongooseConnection = require("./lib/connectDB");
 
@@ -41,7 +55,7 @@ app.use(i18n.init);
 /**
  * API routes:
  */
-app.use("/apiv1/ads", jwtAuth(), require("./routes/api/ads"));
+app.use("/apiv1/ads", upload.single('photo'), jwtAuth(), require("./routes/api/ads"));
 app.use("/apiv1/tags", jwtAuth(), require("./routes/api/tags"));
 app.use("/api-docs", require("./routes/api/api-docs"));
 app.use("/apiv1/loginJWT", loginController.postJWT);
