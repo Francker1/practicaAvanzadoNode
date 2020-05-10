@@ -4,7 +4,6 @@ const express = require("express");
 const router = express.Router();
 const connectionPromise = require("../../lib/connectAMQP");
 
-const jimpResize = require("../../consumers/consumerJimp");
 const helperJS = require("../../public/javascripts/helper");
 
 
@@ -159,10 +158,6 @@ router.post("/", async (req, res, next) => {
         sendAgain = channel.sendToQueue(queueName, Buffer.from(JSON.stringify(dataFile)), {
             persistent: true,
         });
-
-        //call to consumer
-        jimpResize();
-        
 
         //if is ok, response code 201 - created
         res.status(201).json(adSaved);

@@ -1,37 +1,31 @@
 "use strict";
 
-const Jimp = require("jimp");
+const jimp = require("jimp");
 
-const connectionPromise = require("./../lib/connectAMQP");
+
+//!Sorry, i know connection promise must be throw .env file, but if I do, this document crash
+const amqplib = require("amqplib");
+const connectionPromise = amqplib.connect("amqp://jtzntaqq:TPNNYqI3H_PSUtCFVDNfOUXEOSsOOvOI@squid.rmq.cloudamqp.com/jtzntaqq");
+
 const queueName = "jimp";
 
 
-module.exports = async function resizeImage() {
-    
+const dataFilesResize = async function resizeImage() {
+
     const conn = await connectionPromise;
     const channel = await conn.createChannel();
     await channel.assertQueue(queueName, {});
 
     // subscribe to queue
-    channel.consume(queueName, msg => {
+    channel.consume(queueName, async msg => {
 
         const buffer = msg.content.toString();
         const dataFiles = JSON.parse(buffer);
+
+        const image = await jimp.read('../public/img/ads/' + dataFiles.photoName);
+        await image.resize(100, 100);
+        await image.writeAsync('../public/img/ads/thumb/' + dataFiles.photoName);
         
-        Jimp.read(dataFiles.path)
-            .then(imgThumb => {
-
-                return imgThumb
-                .resize(100, 100)
-                .quality(100)
-                .write(`${dataFiles.publicPath}/thumb/${dataFiles.photoName}`); 
-            })
-            .catch(err => {
-
-                const error = new Error("No image resized");
-                error.status = 404;
-                return next(error);
-        });
 
         //work finish 
         channel.ack(msg);
@@ -39,4 +33,4 @@ module.exports = async function resizeImage() {
 
 }
 
-
+dataFilesResize();
