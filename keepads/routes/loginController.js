@@ -1,9 +1,10 @@
 "use strict";
+require("dotenv").config();
 
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const cote = require("cote");
 
 class LoginController{
 
@@ -39,12 +40,39 @@ class LoginController{
             _id: user._id,
             role: user.role
         };
-        
+
         res.redirect("/profile");
+        
+        if( user.role == "admin"){
+
+            //send email client
+            const requester = new cote.Requester({name:"send email requester"})
+            const request = { 
+                type: 'send email', 
+                to: user.email,
+            };
+ 
+            requester.send(request);
+        }        
     }
 
     /**
-     * POST /apiv1/loginJWT
+     * @swagger
+     * /apiv1/loginJWT:
+     *  post:
+     *      summary: Get Token
+     *      description: Use this request to create a new JWT to use API Keepads
+     *      produces:
+     *         - application/json
+     *      parameters:
+     *         - in: body
+     *           name: ad info
+     *           description: The JWT created by user
+     *           schema:
+     *               $ref: '#/definitions/JWT'
+     *      responses:
+     *       201:
+     *         description: Created!
      */
     async postJWT(req, res, next){
 

@@ -9,20 +9,6 @@ const MongoStore = require('connect-mongo')(session);
 
 var app = express();
 
-//upload files to folder img
-const multer = require('multer');
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    
-    cb(null, './public/img/ads');
-  },
-  filename: function (req, file, cb) {
-
-    cb(null, file.originalname);
-  },
-});
-const upload = multer({ storage });
-
 // connect to the database:
 const mongooseConnection = require("./lib/connectDB");
 
@@ -51,6 +37,20 @@ app.locals.title = 'KeepAds API';
 // internationalization i18n
 const i18n = require("./lib/i18nConfig")();
 app.use(i18n.init);
+
+//upload files to folder img
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    
+    cb(null, './public/img/ads');
+  },
+  filename: function (req, file, cb) {
+
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage });
 
 /**
  * API routes:

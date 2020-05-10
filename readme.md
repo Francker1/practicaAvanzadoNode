@@ -1,4 +1,4 @@
-# First practice module Node.js KeepCoding
+# First practice module Node.js ADVANCED KeepCoding
 
 ## Goal
 Build an API for advertisment buy/sell and create system filter in mongo DB. It is not the object of this practice to create a front with React.JS, but to practice, I have decided to include it.
@@ -24,44 +24,54 @@ npm run install:db
 ```
 
 ### start API
-To start API system
+To start API system in develop environment
 
 ```shell
 cd keepads
 npm run dev
 ```
 
-In your browser go to http://localhost:9000/apiv1/ads and see json with advertisements
 
 <br>
 
-## 2. Create React app
-Go to the client root at client/ and install packages from package.json:
+## 2. See front data
+
+In your browser go to http://localhost:9000/ and see cards with advertisements and very very simple filter system
+
+<br>
+
+## Run microservices
+To start microservices, you must install **pm2** 
 
 ```shell
-cd client
-npm install
+cd keepads
+npm i pm2 -g
 ```
 
-### start client
-To start client frontend
-
+To run:
 ```shell
-cd client
-npm start
+cd keepads
+npm run pm2:start
 ```
-
-In your browser go to http://localhost:3000/ and see cards with advertisements and very very simple filter system
-
 
 # API Reference
 
+### Get Token
+POST /apiv1/loginJWT
+
+Return a json with Token, you must provide this token in header request or body
+params: 
+{
+    email: "user@example.es"
+    password: "123456"
+}
 
 ### Advertisements list
 
 GET /apiv1/ads
 
 Returns a json with ads saved in the database, first it is limited to 150 results so as not to overload the request.
+You must provide **token key** in Header of request like Authorization param
 
 <br>
 
@@ -165,6 +175,7 @@ In case of error it will return status 404 and error message:
 POST /apiv1/ads/
 
 Create an advertisement with the following data model. On the other hand, the *tags* are limited to 4 specifically, if not, it returns an error.
+You must provide token key in Header of request like Authorization param
 <br>
 For the photo, I have uploaded 5 test images and you only need to add the file name and its extension
 <br>
@@ -217,9 +228,9 @@ Result ok status: 200
 
 ### Examples URL
 
-http://localhost:3000/apiv1/ads?name=bici <br>
-http://localhost:3000/apiv1/ads?sort=price&tag=lifestyle&skip=1&limit=3 <br>
-http://localhost:3000/apiv1/ads?price=25-150&sort=price
+http://localhost:9000/apiv1/ads?name=bici <br>
+http://localhost:9000/apiv1/ads?sort=price&tag=lifestyle&skip=1&limit=3 <br>
+http://localhost:9000/apiv1/ads?price=25-150&sort=price
 
 <br>
 
@@ -283,3 +294,4 @@ npm run fix:lint
 ## SWAGGER:
 
 To see API documentation in path using Swagger Openapi documentation, go to http://localhost:9000/api-docs/ and enjoy!
+

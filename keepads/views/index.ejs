@@ -26,6 +26,19 @@
     </div>
 
     <div class="row">
+      <div class="col p-0 mb-3">
+        <form class="form-inline" action="">
+          <div class="form-group mx-sm-3 mb-2">
+            <input type="text" class="form-control" placeholder="<%= __("Search By name") %>" name="name">
+          </div>
+          <button type="submit" class="btn btn-primary mb-2"><%= __("Filter") %></button>
+        </form>
+        <div class="ml-3"><a href="/"><%= __("Restart") %></a></div>
+      </div>
+    </div>
+    
+
+    <div class="row">
       <div class="col mb-5">
         <h4><%= __("List of advertisements, showing") %> <%= ads.length %></h4>
       </div> 

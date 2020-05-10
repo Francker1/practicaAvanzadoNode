@@ -2,7 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
-const Jimp = require("jimp");
+const connectionPromise = require("../../lib/connectAMQP");
 
 const helperJS = require("../../public/javascripts/helper");
 
@@ -18,6 +18,10 @@ const Advertisement = require("../../models/Advertisement");
  *      description: Use to request all advertisements created
  *      produces:
  *         - application/json
+ *      parameters:
+ *         - in: header
+ *           name: Authorization
+ *           description: Token API
  *      responses:
  *       200:
  *         description: Advertisements
@@ -120,8 +124,14 @@ router.post("/", async (req, res, next) => {
 
     try{
 
+        const queueName = "jimp";
+        let sendAgain = true;
+
         const adDataCreate = req.body;
+        const filePath = req.file.path;
+        const publicPath = req.file.destination;
         const photoName = req.file.filename;
+
         adDataCreate.photo = photoName ? photoName : "test_image.jpg";
 
         const ad = new Advertisement(adDataCreate);
@@ -129,21 +139,28 @@ router.post("/", async (req, res, next) => {
         //save in BD
         const adSaved = await ad.save();
         
-        const publicPath = req.file.destination;
+        //connection to AMQP server
+        const connection = await connectionPromise;
+        //connection to channel
+        const channel = await connection.createChannel();
+        //assert if have queue
+        await channel.assertQueue(queueName, {
+            durable: true,
+        });
 
-        Jimp.read(req.file.path)
-            .then(imgThumb => {
+        const dataFile = {
+            path: filePath,
+            publicPath: publicPath,
+            photoName: photoName,
+        }
 
-                return imgThumb
-                .resize(100, 100)
-                .quality(100)
-                .write(`${publicPath}/thumb/${photoName}`); 
-            })
-            .catch(err => {
-
-                const error = new Error("No image resized");
-                error.status = 404;
-                return next(error);
+        if( !sendAgain ){
+            await new Promise(resolve => channel.on('drain', resolve));
+        }
+        
+        //send work to the queue
+        sendAgain = channel.sendToQueue(queueName, Buffer.from(JSON.stringify(dataFile)), {
+            persistent: true,
         });
 
         //if is ok, response code 201 - created
@@ -254,6 +271,14 @@ router.delete("/:id", async (req, res, next) => {
  *                  - lifestyle
  *                  - motor
  *                  - mobile
+ *  JWT:
+ *      type: object
+ *      properties:
+ *          email:
+ *              type: string
+ *          password:
+ *              type: string
  */
+
 
 module.exports = router;
