@@ -18,6 +18,10 @@ const Advertisement = require("../../models/Advertisement");
  *      description: Use to request all advertisements created
  *      produces:
  *         - application/json
+ *      parameters:
+ *         - in: header
+ *           name: Authorization
+ *           description: Token API
  *      responses:
  *       200:
  *         description: Advertisements
@@ -267,6 +271,14 @@ router.delete("/:id", async (req, res, next) => {
  *                  - lifestyle
  *                  - motor
  *                  - mobile
+ *  JWT:
+ *      type: object
+ *      properties:
+ *          email:
+ *              type: string
+ *          password:
+ *              type: string
  */
+
 
 module.exports = router;

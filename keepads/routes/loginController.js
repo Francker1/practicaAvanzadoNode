@@ -57,7 +57,22 @@ class LoginController{
     }
 
     /**
-     * POST /apiv1/loginJWT
+     * @swagger
+     * /apiv1/loginJWT:
+     *  post:
+     *      summary: Get Token
+     *      description: Use this request to create a new JWT to use API Keepads
+     *      produces:
+     *         - application/json
+     *      parameters:
+     *         - in: body
+     *           name: ad info
+     *           description: The JWT created by user
+     *           schema:
+     *               $ref: '#/definitions/JWT'
+     *      responses:
+     *       201:
+     *         description: Created!
      */
     async postJWT(req, res, next){
 

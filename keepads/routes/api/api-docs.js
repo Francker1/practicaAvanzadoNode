@@ -22,7 +22,7 @@ const swaggerOptions = {
         }
     },
     basePath: "/",
-    apis: ["./routes/api/ads.js"]
+    apis: ["./routes/api/ads.js","./routes/loginController.js"]
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
