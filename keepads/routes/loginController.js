@@ -40,6 +40,16 @@ class LoginController{
             role: user.role
         };
         
+        if( user.role == "admin"){
+
+            await user.sendEmail(
+                process.env.ADMIN_EMAIL, 
+                'Login admin', 
+                `Un administrador se ha logueado en KeepAds`,
+            );
+        }
+        
+
         res.redirect("/profile");
     }
 
