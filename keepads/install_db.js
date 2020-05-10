@@ -47,5 +47,10 @@ const initUsers = async () => {
             password: await User.hashPassword("123456"),
             role: "user"
         },
+        {
+            email: "franco.clemente1@gmail.com",
+            password: await User.hashPassword("asdfgh"),
+            role: "admin"
+        },
     ]);
 }
