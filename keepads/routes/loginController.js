@@ -3,7 +3,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+//const cote = require("cote");
+const cote = require("cote");
 
 class LoginController{
 
@@ -39,18 +40,20 @@ class LoginController{
             _id: user._id,
             role: user.role
         };
+
+        res.redirect("/profile");
         
         if( user.role == "admin"){
 
-            await user.sendEmail(
-                process.env.ADMIN_EMAIL, 
-                'Login admin', 
-                `Un administrador se ha logueado en KeepAds`,
-            );
-        }
-        
-
-        res.redirect("/profile");
+            //send email client
+            const requester = new cote.Requester({name:"send email requester"})
+            const request = { 
+                type: 'send email', 
+                to: user.email,
+            };
+ 
+            requester.send(request);
+        }        
     }
 
     /**
