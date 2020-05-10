@@ -122,9 +122,9 @@ router.post("/", async (req, res, next) => {
     try{
 
         const queueName = "jimp";
+        let sendAgain = true;
 
         const adDataCreate = req.body;
-
         const filePath = req.file.path;
         const publicPath = req.file.destination;
         const photoName = req.file.filename;
@@ -136,11 +136,11 @@ router.post("/", async (req, res, next) => {
         //save in BD
         const adSaved = await ad.save();
         
-        //conectarnos al servidor amqp
+        //connection to AMQP server
         const connection = await connectionPromise;
-        //conectar  a un canal
+        //connection to channel
         const channel = await connection.createChannel();
-        //asegurar que tenemos cola
+        //assert if have queue
         await channel.assertQueue(queueName, {
             durable: true,
         });
@@ -150,8 +150,15 @@ router.post("/", async (req, res, next) => {
             publicPath: publicPath,
             photoName: photoName,
         }
+
+        if( !sendAgain ){
+            await new Promise(resolve => channel.on('drain', resolve));
+        }
+        
         //send work to the queue
-        channel.sendToQueue(queueName, Buffer.from(JSON.stringify(dataFile)), {});
+        sendAgain = channel.sendToQueue(queueName, Buffer.from(JSON.stringify(dataFile)), {
+            persistent: true,
+        });
 
         //call to consumer
         jimpResize();

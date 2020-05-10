@@ -12,10 +12,9 @@ module.exports = async function resizeImage() {
     const channel = await conn.createChannel();
     await channel.assertQueue(queueName, {});
 
-    // nos suscribimos a una cola
+    // subscribe to queue
     channel.consume(queueName, msg => {
 
-        //trabajo que corresponda a este workers
         const buffer = msg.content.toString();
         const dataFiles = JSON.parse(buffer);
         
@@ -34,7 +33,7 @@ module.exports = async function resizeImage() {
                 return next(error);
         });
 
-        //y cuando haya terminado 
+        //work finish 
         channel.ack(msg);
     });
 
