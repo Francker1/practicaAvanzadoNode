@@ -1,6 +1,6 @@
 "use strict";
 
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 
 const jimp = require("jimp");
 
@@ -20,7 +20,9 @@ async function resizeImage() {
         const buffer = msg.content.toString();
         const dataFiles = JSON.parse(buffer);   
 
-        jimp.read('./../public/img/ads/' + dataFiles.photoName)
+        console.log(dataFiles);
+
+        jimp.read('../public/img/ads/' + dataFiles.photoName)
             .then(lenna => {
                 return lenna
                 .resize(100, 100)
@@ -37,4 +39,4 @@ async function resizeImage() {
 
 }
 
-resizeImage();
+resizeImage().catch( err => console.log("Hubo un error: ", err));
