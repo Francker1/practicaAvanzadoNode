@@ -16,6 +16,7 @@ If you login in the webapp with the administrator user of this readme, I will re
 To test the API the params must encoded using the format *form-data* and the content of the photo field must be an image file, otherwise the ad will not be saved.
 
 IMPORTANT: There is a small bug with the microservice that manages images, because you have to do the POST twice to create an advertisement and it works. This bug is detected and reported to the Node teacher for helpme.
+
 ======================================================================
 
 # First practice module Node.js ADVANCED KeepCoding
