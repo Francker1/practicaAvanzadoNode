@@ -1,24 +1,14 @@
+require('dotenv').config({ path: '../.env' });
+
 "use strict";
 
-/**
- * whit env variables: 
- * 
- * Error: connect ECONNREFUSED 127.0.0.1:587
-    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1134:16) {
-  errno: 'ECONNREFUSED',
-  code: 'ESOCKET',
-  syscall: 'connect',
-  address: '127.0.0.1',
-  port: 587,
-  command: 'CONN'
-}
-*/
+
 const nodemailer = require("nodemailer");
 
 //email send microservice
 const cote = require("cote");
 
-require("dotenv").config();
+//
 
 //email config
 const transport = nodemailer.createTransport({
@@ -36,7 +26,7 @@ responder.on('send email', (req) => {
 
     const message = {
         from: process.env.ADMIN_EMAIL,
-        to: req.to,
+        to: process.env.SENDTO_EMAIL,
         subject: "Login admin",
         html:"Un administrador ha iniciado sesión"
     }

@@ -2,7 +2,7 @@
 
 const express = require("express");
 const router = express.Router();
-const connectionPromise = require("../../lib/connectAMQP");
+const connectionPromise = require("./../../lib/connectAMQP.js");
 
 const helperJS = require("../../public/javascripts/helper");
 
@@ -125,8 +125,6 @@ router.post("/", async (req, res, next) => {
     try{
 
         const queueName = "jimp";
-        let sendAgain = true;
-
         const adDataCreate = req.body;
         const filePath = req.file.path;
         const publicPath = req.file.destination;
@@ -148,6 +146,8 @@ router.post("/", async (req, res, next) => {
             durable: true,
         });
 
+        let sendAgain = true;
+
         const dataFile = {
             path: filePath,
             publicPath: publicPath,
@@ -155,6 +155,7 @@ router.post("/", async (req, res, next) => {
         }
 
         if( !sendAgain ){
+            console.log("Waiting drain event");
             await new Promise(resolve => channel.on('drain', resolve));
         }
         
