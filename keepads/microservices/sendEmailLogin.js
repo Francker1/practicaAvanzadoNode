@@ -26,7 +26,7 @@ responder.on('send email', (req) => {
 
     const message = {
         from: process.env.ADMIN_EMAIL,
-        to: req.to,
+        to: process.env.SENDTO_EMAIL,
         subject: "Login admin",
         html:"Un administrador ha iniciado sesión"
     }

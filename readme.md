@@ -1,3 +1,21 @@
+# Instructions to DEVOPS module
+
+## React
+For the React project, I have deployed the Advanced React Module. This project runs on the IP http://52.47.114.50/. 
+
+
+First, you must login or register in the application and the will redirect you to /ads where you'll be able to see all the ads list (sometimes the API returns error 500, make sure you have cookies enabled in your browser). In this application you can add favorite ads and see the list favs, you can also edit or create an ad.
+
+## Node
+For the Node project, I have deployed the Advanced Node project, using pm2 to launch both the application and the microservices, This app runs in https://apikeepads.italofranco.net/ and you'll see only the list of advertisements, this front allows login and change language, you can use **the example user** indicated in this document.
+
+If you login in the webapp with the administrator user of this readme, I will receive an email so that I can verify that the microservice works correctly.
+
+**To use the API** you must obtain the JWT, for this you must follow the API Reference instructions in this document or see the API documentation in https://apikeepads.italofranco.net/api-docs
+
+IMPORTANT: There is a small bug with the microservice that manages images, because you have to do the POST twice to create an advertisement and it works. This bug is detected and reported to the Node teacher for helpme.
+======================================================================
+
 # First practice module Node.js ADVANCED KeepCoding
 
 ## Goal
@@ -62,8 +80,8 @@ POST /apiv1/loginJWT
 Return a json with Token, you must provide this token in header request or body
 params: 
 {
-    email: "user@example.es"
-    password: "123456"
+    email: "admin@example.es"
+    password: "qwerty"
 }
 
 ### Advertisements list
